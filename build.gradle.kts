@@ -17,20 +17,34 @@ group = "de.polocloud"
 
 repositories {
     mavenCentral()
+    maven { url = uri("https://repo1.maven.org/maven2") }
+
+    maven {
+        name = "polocloud-snapshots"
+        url = uri("https://central.sonatype.com/repository/maven-snapshots/")
+    }
 }
 
 dependencies {
     polocloudRuntime(libs.h2)
 
-    compileOnly(libs.bundles.logging)
-    compileOnly(libs.bundles.database)
-    compileOnly(libs.bundles.database.drivers)
-    compileOnly(libs.bundles.polocloud.common)
+    polocloudRuntime(libs.log4j.api)
+    polocloudRuntime(libs.log4j.core)
+    polocloudRuntime(libs.log4j.slf4j)
 
-    runtimeOnly(libs.bundles.logging)
-    runtimeOnly(libs.bundles.database)
-    runtimeOnly(libs.bundles.database.drivers)
-    runtimeOnly(libs.bundles.polocloud.common)
+    polocloudRuntime(libs.hikariCp)
+    polocloudRuntime(libs.postgreSql)
+
+    polocloudRuntime(libs.mongodb)
+    polocloudRuntime(libs.mysql)
+    polocloudRuntime(libs.redis)
+    polocloudRuntime(libs.mariadb)
+    polocloudRuntime(libs.h2)
+
+    polocloudRuntime(libs.polocloud.i18n)
+    polocloudRuntime(libs.kotlinx.serialization.json)
+    polocloudRuntime(libs.kotlin.reflect)
+
 }
 
 java {
