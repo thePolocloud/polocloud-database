@@ -26,25 +26,9 @@ repositories {
 }
 
 dependencies {
-    polocloudRuntime(libs.h2)
-
-    polocloudRuntime(libs.log4j.api)
-    polocloudRuntime(libs.log4j.core)
-    polocloudRuntime(libs.log4j.slf4j)
-
-    polocloudRuntime(libs.hikariCp)
-    polocloudRuntime(libs.postgreSql)
-
-    polocloudRuntime(libs.mongodb)
-    polocloudRuntime(libs.mysql)
-    polocloudRuntime(libs.redis)
-    polocloudRuntime(libs.mariadb)
-    polocloudRuntime(libs.h2)
-
-    polocloudRuntime(libs.polocloud.i18n)
-    polocloudRuntime(libs.kotlinx.serialization.json)
-    polocloudRuntime(libs.kotlin.reflect)
-
+    polocloudRuntime(libs.bundles.logging)
+    polocloudRuntime(libs.bundles.database.drivers)
+    polocloudRuntime(libs.bundles.polocloud.common)
 }
 
 java {

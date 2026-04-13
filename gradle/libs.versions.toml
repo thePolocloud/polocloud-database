@@ -15,7 +15,7 @@ h2 = "2.4.240"
 
 # polocloud
 polocloud-i18n = "3.0.2"
-polocloud-gradle-plugin = "3.0.0"
+polocloud-gradle-plugin = "3.0.1"
 
 # logging
 log4j = "2.25.4"
@@ -47,7 +47,6 @@ nexus-publish = { id = "io.github.gradle-nexus.publish-plugin", version.ref = "n
 
 [bundles]
 # database
-database = ["hikariCp", "postgreSql"]
-database-drivers = ["mongodb", "mysql", "redis", "mariadb", "h2"]
+database-drivers = ["hikariCp", "postgreSql", "mongodb", "mysql", "redis", "mariadb", "h2"]
 logging = ["log4j-api", "log4j-core", "log4j-slf4j"]
 polocloud-common = ["polocloud-i18n", "kotlinx-serialization-json", "kotlin-reflect"]
