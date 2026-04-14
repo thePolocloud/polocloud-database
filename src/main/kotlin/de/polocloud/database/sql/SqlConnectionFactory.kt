@@ -9,10 +9,12 @@ import de.polocloud.database.DatabaseState
 import de.polocloud.i18n.api.trWarn
 
 /**
- * Abstract SQL connection factory using HikariCP as the connection pool.
- * Provides methods to connect to a SQL database and manage the connection pool.
+ * SQL connection factory backed by a HikariCP connection pool.
  *
- * @see dev.httpmarco.polocloud.database.DatabaseConnectionFactory
+ * Supports PostgreSQL, MySQL, MariaDB, and H2 databases.
+ * The JDBC URL is constructed automatically from the supplied [DatabaseCredentials].
+ *
+ * @see de.polocloud.database.DatabaseConnectionFactory
  */
 class SqlConnectionFactory(credentials: DatabaseCredentials) :
     DatabaseConnectionFactory<DatabaseCredentials>(credentials) {

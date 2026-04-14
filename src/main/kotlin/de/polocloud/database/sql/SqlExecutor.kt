@@ -21,18 +21,13 @@ import kotlin.time.ExperimentalTime
 /**
  * SQL-based implementation of [DatabaseExecutor].
  *
- * This executor provides automatic table creation and reflection-based
- * entity mapping. The field annotated with [EntryIdentifier] is used
- * as the primary key.
+ * Provides automatic table creation and reflection-based entity mapping.
+ * The field annotated with [EntryIdentifier] is used as the primary key.
  *
- * Features:
- * - Automatic table generation
- * - Insert or update (upsert-like behavior)
- * - Enum stored as String
- * - UUID stored as String
- *
- * Note:
- * This implementation prioritizes simplicity over reflection caching.
+ * - Tables are created on demand if they do not yet exist.
+ * - Save performs an INSERT or an UPDATE depending on whether the entity already exists.
+ * - Enums and UUIDs are persisted as strings.
+ * - [kotlin.time.Instant] values are stored as SQL TIMESTAMP.
  */
 class SqlExecutor(
     private val factory: SqlConnectionFactory
@@ -198,7 +193,7 @@ class SqlExecutor(
         ensureTableExists(key)
         val meta = resolveMeta(key)
 
-        // Keine Filter → alles zurückgeben
+        // No filters → return all
         if (filters.isEmpty()) {
             return queryList(
                 "SELECT * FROM ${key.id()}",
@@ -293,7 +288,7 @@ class SqlExecutor(
             ds.connection.use { conn ->
                 conn.prepareStatement(sql).use { stmt ->
                     params.forEachIndexed { i, p ->
-                        stmt.setObject(i + 1, mapValueForDb(p)) // <-- hier
+                        stmt.setObject(i + 1, mapValueForDb(p))
                     }
                     stmt.executeUpdate()
                 }
