@@ -8,6 +8,7 @@ plugins {
     `maven-publish`
     signing
 
+    alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.nexus.publish)
     alias(libs.plugins.polocloud.gradle.plugin)
 }

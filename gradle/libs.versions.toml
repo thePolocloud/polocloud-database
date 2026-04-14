@@ -3,6 +3,7 @@
 kotlin = "2.3.10"
 kotlinxSerialization = "1.10.0"
 nexus-publish = "2.0.0"
+kotlinSerializationPlugin = "2.3.10"
 
 # database
 hikariCp = "7.0.2"
@@ -44,6 +45,7 @@ polocloud-i18n = { group = "de.polocloud", name = "polocloud-i18n", version.ref 
 [plugins]
 polocloud-gradle-plugin = { id = "de.polocloud.gradle.plugin", version.ref = "polocloud-gradle-plugin" }
 nexus-publish = { id = "io.github.gradle-nexus.publish-plugin", version.ref = "nexus-publish" }
+kotlin-serialization    = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlinSerializationPlugin" }
 
 [bundles]
 # database
