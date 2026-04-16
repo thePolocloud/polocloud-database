@@ -30,7 +30,7 @@ class SqlConnectionFactory(credentials: DatabaseCredentials) :
     override fun connect(credentials: DatabaseCredentials) {
         val jdbcUrl = when (credentials) {
             is DatabaseCredentials.DatabaseRelated -> "jdbc:${credentials.javaClass.simpleName.lowercase()}://${credentials.address()}/${credentials.database}"
-            is DatabaseCredentials.H2 -> "jdbc:h2:file:./${credentials.path}"
+            is DatabaseCredentials.H2 -> "jdbc:h2:file:./${credentials.path};DB_CLOSE_ON_EXIT=FALSE;DB_CLOSE_DELAY=-1"
             else -> {
                 logger.error(
                     TranslationService.tr(
