@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory
  * - providing an SQL executor
  * - basic validation of the connection state
  */
-abstract class DatabaseConnectionFactory<C : de.polocloud.database.DatabaseCredentials>(private val credentials: C) {
+abstract class DatabaseConnectionFactory<C : DatabaseCredentials>(private val credentials: C) {
 
     /**
      * Logger used for database connection lifecycle messages.

@@ -411,6 +411,8 @@ class SqlExecutor(
             val value = rs.getObject(field.name)
 
             when {
+                value == null -> null
+
                 field.type.isEnum && value is String ->
                     java.lang.Enum.valueOf(field.type as Class<out Enum<*>>, value)
 
