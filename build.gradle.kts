@@ -30,6 +30,20 @@ dependencies {
     polocloudRuntime(libs.bundles.logging)
     polocloudRuntime(libs.bundles.database.drivers)
     polocloudRuntime(libs.bundles.polocloud.common)
+
+    testImplementation(libs.junit.jupiter)
+    testRuntimeOnly(libs.junit.platform.launcher)
+}
+
+tasks.test {
+    useJUnitPlatform()
+
+    // Tests exercise real embedded H2 files via relative paths (and TranslationService's
+    // default ".translations" cache dir is also relative) - keep all of that inside build/
+    // instead of letting it land in the repo root.
+    val testWorkDir = layout.buildDirectory.dir("test-workdir").get().asFile
+    workingDir = testWorkDir
+    doFirst { testWorkDir.mkdirs() }
 }
 
 java {

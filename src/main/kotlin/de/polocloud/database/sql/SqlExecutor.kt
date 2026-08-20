@@ -281,11 +281,8 @@ class SqlExecutor(
             throw FactoryNotPresentException()
         }
 
-        val ds = factory.dataSource
-            ?: throw IllegalStateException("DataSource not initialized")
-
         return try {
-            ds.connection.use { conn ->
+            withConnection { conn ->
                 conn.prepareStatement(sql).use { stmt ->
                     params.forEachIndexed { i, p ->
                         stmt.setObject(i + 1, mapValueForDb(p))
@@ -327,15 +324,11 @@ class SqlExecutor(
             throw FactoryNotPresentException()
         }
 
-        val ds = factory.dataSource
-            ?: throw IllegalStateException("DataSource not initialized")
+        return try {
+            withConnection { conn ->
+                val results = mutableListOf<T>()
 
-        val results = mutableListOf<T>()
-
-        try {
-            ds.connection.use { conn ->
                 conn.prepareStatement(sql).use { stmt ->
-
                     params.forEachIndexed { i, p ->
                         stmt.setObject(i + 1, p)
                     }
@@ -346,12 +339,33 @@ class SqlExecutor(
                         }
                     }
                 }
+
+                results
             }
         } catch (ex: Exception) {
             logger.error("SQL query failed: $sql", ex)
+            emptyList()
         }
+    }
 
-        return results
+    /**
+     * Runs [action] against a pooled connection. If it fails with what looks like H2 file
+     * corruption (see [H2Recovery.isCorruption]) - which can surface mid-operation on an already
+     * running pool, not just during the initial [SqlConnectionFactory.connect] - this triggers
+     * [SqlConnectionFactory.recoverFromCorruption] and retries [action] once against the rebuilt
+     * pool. Any other failure (syntax error, constraint violation, ...) is rethrown unchanged.
+     */
+    private fun <T> withConnection(action: (java.sql.Connection) -> T): T {
+        val ds = factory.dataSource ?: throw IllegalStateException("DataSource not initialized")
+
+        return try {
+            ds.connection.use(action)
+        } catch (ex: Exception) {
+            if (!factory.recoverFromCorruption(ex)) throw ex
+
+            val recovered = factory.dataSource ?: throw IllegalStateException("DataSource not initialized")
+            recovered.connection.use(action)
+        }
     }
 
     /**
@@ -364,11 +378,8 @@ class SqlExecutor(
             throw FactoryNotPresentException()
         }
 
-        val ds = factory.dataSource
-            ?: throw IllegalStateException("DataSource not initialized")
-
         try {
-            ds.connection.use { conn ->
+            withConnection { conn ->
                 val meta = conn.metaData
                 val rs = meta.getTables(null, null, key.id(), arrayOf("TABLE"))
 

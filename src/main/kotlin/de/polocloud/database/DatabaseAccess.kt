@@ -15,6 +15,10 @@ object DatabaseAccess {
 
     fun executor() = this.connection.executor()
 
+    fun checkpoint() = this.connection.checkpoint()
+
+    fun recoveryNotice(): RecoveryNotice? = this.connection.recoveryNotice
+
     fun close() {
         this.connection.close()
     }

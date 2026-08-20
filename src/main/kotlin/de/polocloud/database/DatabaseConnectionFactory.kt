@@ -27,7 +27,18 @@ abstract class DatabaseConnectionFactory<C : DatabaseCredentials>(private val cr
      * Initially set to [de.polocloud.database.DatabaseState.UNKNOWN] and should be updated
      * by concrete implementations when connecting or closing the connection.
      */
+    @Volatile
     var state = DatabaseState.UNKNOWN
+
+    /**
+     * Set by [connect] when it had to take a corrective action instead of a normal connection
+     * (e.g. auto-recovering a corrupted embedded H2 store). `null` after a clean connect.
+     *
+     * Implementations that can also self-heal outside of [connect] (mid-operation, not just at
+     * startup) update this the same way whenever that happens.
+     */
+    @Volatile
+    var recoveryNotice: RecoveryNotice? = null
 
     /**
      * Establishes a connection to the database using the given credentials.
@@ -63,4 +74,14 @@ abstract class DatabaseConnectionFactory<C : DatabaseCredentials>(private val cr
      * Close database method
      */
     abstract fun close()
+
+    /**
+     * Forces any buffered changes to be flushed and synced to disk immediately, shrinking the
+     * window in which an unexpected process/OS crash could corrupt the store.
+     *
+     * No-op by default. Backends that already fsync on every commit (or don't have a comparable
+     * concept) don't need to override this; callers should treat it purely as a best-effort
+     * durability hint for infrequent, critical writes - not something to call on every operation.
+     */
+    open fun checkpoint() {}
 }
