@@ -6,7 +6,7 @@ nexus-publish = "2.0.0"
 kotlinSerializationPlugin = "2.3.10"
 
 # database
-hikariCp = "7.0.2"
+hikariCp = "7.1.0"
 postgreSql = "42.7.10"
 mongodb = "5.6.4"
 mysql = "9.6.0"
