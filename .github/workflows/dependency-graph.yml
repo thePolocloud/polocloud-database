@@ -1,0 +1,29 @@
+name: Update Dependency Graph
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  dependency-submission:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # buildscript resolution (de.polocloud.gradle.plugin) requires JVM 25+ - GitHub's own
+      # auto-generated "Automatic Dependency Submission (Gradle)" workflow doesn't know that and
+      # fails on every push. Defining our own dependency-submission workflow (this file) takes
+      # over from that automatic one and lets us pin the correct JDK.
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 25
+
+      - name: Generate and submit dependency graph
+        uses: gradle/actions/dependency-submission@v3
