@@ -19,7 +19,7 @@ sqlite = "3.53.2.1"
 
 # polocloud
 polocloud-i18n = "3.0.2"
-polocloud-gradle-plugin = "3.0.1"
+polocloud-gradle-plugin = "3.0.3"
 
 # logging
 log4j = "2.26.1"
