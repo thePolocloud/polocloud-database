@@ -7,7 +7,7 @@ kotlinSerializationPlugin = "2.4.10"
 
 # database
 hikariCp = "7.1.0"
-postgreSql = "42.7.10"
+postgreSql = "42.7.13"
 mongodb = "5.10.0"
 mysql = "26.7.0"
 redis = "8.0.0"
