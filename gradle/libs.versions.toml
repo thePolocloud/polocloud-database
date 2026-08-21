@@ -1,7 +1,7 @@
 [versions]
 # kotlin
 kotlin = "2.3.10"
-kotlinxSerialization = "1.10.0"
+kotlinxSerialization = "1.11.0"
 nexus-publish = "2.0.0"
 kotlinSerializationPlugin = "2.3.10"
 
