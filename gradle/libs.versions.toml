@@ -15,7 +15,7 @@ mariadb = "3.5.7"
 h2 = "2.4.240"
 mssql = "13.4.0.jre11"
 oracle = "23.26.3.0.0"
-sqlite = "3.53.2.1"
+sqlite = "3.53.4.0"
 
 # polocloud
 polocloud-i18n = "3.0.2"
